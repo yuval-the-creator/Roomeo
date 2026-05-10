@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  # The Database
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: realestate_db
+    ports:
+      - "5555:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # The Scraper
+  scraper:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/realestate_db
+    # We keep it open so it doesn't just run and exit immediately while testing
+    tty: true
+
+volumes:
+  postgres_data:

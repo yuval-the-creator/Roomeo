@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/playwright:v1.59.1-jammy
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Run the scraper
+CMD ["node", "scraper.js"]
